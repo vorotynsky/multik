@@ -6,7 +6,13 @@ endif()
 
 add_compile_definitions(GLEW_STATIC)
 
-add_executable(multik "main.cpp")
+
+file(GLOB multikSrc
+        "*/*.hpp"
+        "*/*.cpp"
+        "main.cpp")
+
+add_executable(multik ${multikSrc})
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)

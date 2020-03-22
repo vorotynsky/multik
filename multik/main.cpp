@@ -18,6 +18,9 @@
 #include <iostream>
 #include <fstream>
 
+#include "core/VertexBuffer.hpp"
+#include "core/IndexBuffer.hpp"
+
 const int HEIGHT = 480;
 const int WIDTH = 640;
 
@@ -75,6 +78,57 @@ static unsigned int LoadShader(const std::string &vertexPath, const std::string 
     return result;
 }
 
+void mainLoop(GLFWwindow *window)
+{
+    unsigned int program =
+            LoadShader("shaders/square/color.vertex.glsl", "shaders/square/color.fragment.glsl");
+    glUseProgram(program);
+
+    float vertices[] = {
+            -0.5f, -0.5f,
+            0.5f, -0.5f,
+            0.5f,  0.5f,
+            -0.5f,  0.5f
+    };
+    unsigned int indexes[] = {
+            0, 1, 2,
+            2, 3, 0
+    };
+    GLuint vertexArray;
+    glGenVertexArrays(1, &vertexArray);
+    glBindVertexArray(vertexArray);
+
+    multik::core::VertexBuffer buffer(vertices, 6 * 2 * sizeof(float));
+
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (GLvoid*)nullptr);
+    glEnableVertexAttribArray(0);
+
+    multik::core::IndexBuffer indexBuffer(indexes, 6);
+
+    glBindVertexArray(vertexArray);
+
+    while(!glfwWindowShouldClose(window)) {
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glfwPollEvents();
+
+        glClearColor(0.255f, 0.063f, 0.127f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        buffer.Bind();
+        indexBuffer.Bind();
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+        buffer.Unbind();
+        indexBuffer.Unbind();
+
+        glfwSwapBuffers(window);
+
+    }
+    glDeleteProgram(program);
+    glDeleteVertexArrays(1, &vertexArray);
+}
 
 int main(const int argc, const char **argv)
 {    
@@ -99,53 +153,9 @@ int main(const int argc, const char **argv)
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
 
-    unsigned int program =
-        LoadShader("shaders/square/color.vertex.glsl", "shaders/square/color.fragment.glsl");
-    glUseProgram(program);
 
-    float vertices[] = {
-        -0.5f, -0.5f,
-         0.5f, -0.5f,
-         0.5f,  0.5f,
-        -0.5f,  0.5f
-    };
-    unsigned int indexes[] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-    GLuint vertexArray;
-    glGenVertexArrays(1, &vertexArray);
-    glBindVertexArray(vertexArray);
+    mainLoop(window);
 
-    unsigned int buffer, indexBuffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), vertices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (GLvoid*)nullptr);
-    glEnableVertexAttribArray(0);
-
-    glGenBuffers(1, &indexBuffer);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), indexes, GL_STATIC_DRAW);
-
-    glBindVertexArray(vertexArray);
-
-    while(!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glfwPollEvents();
-
-        glClearColor(0.255f, 0.063f, 0.127f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-        glfwSwapBuffers(window);
-    }
-    glDeleteProgram(program);
-    glDeleteVertexArrays(1, &vertexArray);
-    glDeleteBuffers(1, &buffer);
 
     glfwTerminate();
 
