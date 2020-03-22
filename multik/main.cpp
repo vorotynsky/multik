@@ -1,15 +1,14 @@
-#define GLEW_STATIC
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <cstdlib>
+
+#include <iostream>
+#include <fstream>
 
 const int HEIGHT = 480;
 const int WIDTH = 640;
 
 int main(const int argc, const char **argv)
 {	
-	// //Инициализация GLFW
 	glfwInit();
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
