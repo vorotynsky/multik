@@ -16,24 +16,32 @@
 #include "VertexBuffer.hpp"
 
 
-multik::core::VertexBuffer::VertexBuffer(const void *data, unsigned short size)
+namespace multik::core 
 {
-    glGenBuffers(1, &this->id);
-    glBindBuffer(GL_ARRAY_BUFFER, this->id);
-    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-}
+    VertexBuffer::VertexBuffer(const void *data, unsigned short size, const BufferLayout &layout)
+    {
+        glGenBuffers(1, &this->id);
+        glBindBuffer(GL_ARRAY_BUFFER, this->id);
+        glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+    }
 
-multik::core::VertexBuffer::~VertexBuffer()
-{
-    glDeleteBuffers(1, &id);
-}
+    VertexBuffer::~VertexBuffer()
+    {
+        glDeleteBuffers(1, &id);
+    }
 
-void multik::core::VertexBuffer::Bind()
-{
-    glBindBuffer(GL_ARRAY_BUFFER, this->id);
-}
+    void VertexBuffer::Bind()
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, this->id);
+    }
 
-void multik::core::VertexBuffer::Unbind()
-{
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    void VertexBuffer::Unbind()
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+
+    const BufferLayout &VertexBuffer::getLayout() const
+    {
+        return this->layout;
+    }
 }

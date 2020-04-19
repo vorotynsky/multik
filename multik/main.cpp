@@ -98,9 +98,19 @@ void mainLoop(GLFWwindow *window)
     glGenVertexArrays(1, &vertexArray);
     glBindVertexArray(vertexArray);
 
-    multik::core::VertexBuffer buffer(vertices, 6 * 2 * sizeof(float));
+    multik::core::BufferLayout layout({
+        multik::core::BufferElement::createBuffer<multik::types::Float2>()
+    });
 
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (GLvoid*)nullptr);
+    multik::core::VertexBuffer buffer(vertices, 4 * 2 * sizeof(float), layout);
+
+    auto element = *layout.begin();
+    glVertexAttribPointer(0, 
+        element.Type.count, 
+        GL_FLOAT,                                 // TODO: transform Type to GL_Type
+        element.Normalized ? GL_TRUE : GL_FALSE, 
+        element.Type.count * sizeof(float),       // TODO: count stride
+        (GLvoid*)element.Offset);
     glEnableVertexAttribArray(0);
 
     multik::core::IndexBuffer indexBuffer(indexes, 6);

@@ -12,28 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#pragma once
-
-#include "../types/numeric.hpp"
 #include "VertexLayout.hpp"
 
 namespace multik::core
 {
-    class VertexBuffer
+    BufferLayout::BufferLayout(const std::initializer_list<BufferElement> &elements)
+        : elements(elements) { }
+
+    typename std::vector<BufferElement>::const_iterator BufferLayout::begin() const
     {
-    public:
-        VertexBuffer(const void *data, types::ssize_t size, const BufferLayout &layout);
-        ~VertexBuffer();
+        return elements.cbegin();
+    }
+    
+    typename std::vector<BufferElement>::const_iterator BufferLayout::end() const
+    {
+        return elements.end();
+    }
 
-        VertexBuffer(const VertexBuffer &other) = delete;
-
-        const BufferLayout &getLayout() const;
-
-        void Bind();
-        void Unbind();
-
-    private:
-        unsigned int id;
-        BufferLayout layout;
-    };
+    void BufferLayout::evaluate()
+    {
+        int offset = 0;
+        for (auto el : elements)
+        {
+            el.Offset = offset;
+            offset += el.Type.size;
+        }
+    }
 }
