@@ -35,7 +35,7 @@ namespace multik::core
         for (auto el : elements)
         {
             el.Offset = offset;
-            offset += el.Type.size;
+            offset += el.Type.Size;
         }
     }
 }

@@ -20,6 +20,7 @@
 
 #include "core/VertexBuffer.hpp"
 #include "core/IndexBuffer.hpp"
+#include "types/GLTypes.hpp"
 
 const int HEIGHT = 480;
 const int WIDTH = 640;
@@ -80,6 +81,9 @@ static unsigned int LoadShader(const std::string &vertexPath, const std::string 
 
 void mainLoop(GLFWwindow *window)
 {
+    namespace mltcore = multik::core;
+    namespace mltype = multik::types;
+
     unsigned int program =
             LoadShader("shaders/square/color.vertex.glsl", "shaders/square/color.fragment.glsl");
     glUseProgram(program);
@@ -98,22 +102,22 @@ void mainLoop(GLFWwindow *window)
     glGenVertexArrays(1, &vertexArray);
     glBindVertexArray(vertexArray);
 
-    multik::core::BufferLayout layout({
-        multik::core::BufferElement::createBuffer<multik::types::Float2>()
+    mltcore::BufferLayout layout({
+        mltcore::BufferElement::createBuffer<mltype::Float2>()
     });
 
-    multik::core::VertexBuffer buffer(vertices, 4 * 2 * sizeof(float), layout);
+    mltcore::VertexBuffer buffer(vertices, 4 * 2 * sizeof(float), layout);
 
     auto element = *layout.begin();
     glVertexAttribPointer(0, 
-        element.Type.count, 
-        GL_FLOAT,                                 // TODO: transform Type to GL_Type
-        element.Normalized ? GL_TRUE : GL_FALSE, 
-        element.Type.count * sizeof(float),       // TODO: count stride
-        (GLvoid*)element.Offset);
+        element.Type.Count, 
+        mltype::gl::toEnum(element.Type.Type),
+        mltype::gl::boolean(element.Normalized), 
+        element.Type.Size,
+        (GLvoid*) element.Offset);
     glEnableVertexAttribArray(0);
 
-    multik::core::IndexBuffer indexBuffer(indexes, 6);
+    mltcore::IndexBuffer indexBuffer(indexes, 6);
 
     glBindVertexArray(vertexArray);
 

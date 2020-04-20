@@ -20,7 +20,7 @@ namespace multik::types
 {
     struct GraphicsTypeInfo
     {
-        int size, count;
+        int Size, Count;
         NumericType Type;
     };
 
