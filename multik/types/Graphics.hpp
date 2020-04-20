@@ -21,6 +21,7 @@ namespace multik::types
     struct GraphicsTypeInfo
     {
         int size, count;
+        NumericType Type;
     };
 
     template <typename T>

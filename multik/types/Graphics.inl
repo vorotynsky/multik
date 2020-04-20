@@ -32,7 +32,7 @@ namespace multik::types {
     template <typename T>
     GraphicsTypeInfo Single<T>::info()
     {
-        return { size(), count() };
+        return { size(), count(), types::toTypeEnum<T>()};
     }
 
     
@@ -51,7 +51,7 @@ namespace multik::types {
     template <typename T, tsize_t dimensions>
     GraphicsTypeInfo Vector<T, dimensions>::info()
     {
-        return { size(), count() };
+        return { size(), count(), types::toTypeEnum<T>()};
     }
 
     
@@ -70,6 +70,6 @@ namespace multik::types {
     template <typename T, tsize_t dimensions>
     GraphicsTypeInfo Matrix<T, dimensions>::info()
     {
-        return { size(), count() };
+        return { size(), count(), types::toTypeEnum<T>()};
     }
 }
