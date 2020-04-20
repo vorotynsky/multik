@@ -19,6 +19,7 @@
 namespace multik::core 
 {
     VertexBuffer::VertexBuffer(const void *data, unsigned short size, const BufferLayout &layout)
+        : layout(layout)
     {
         glGenBuffers(1, &this->id);
         glBindBuffer(GL_ARRAY_BUFFER, this->id);

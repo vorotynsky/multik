@@ -20,7 +20,10 @@
 
 #include "core/VertexBuffer.hpp"
 #include "core/IndexBuffer.hpp"
+#include "core/VertexArray.hpp"
+#include "types/reference.hpp"
 #include "types/GLTypes.hpp"
+
 
 const int HEIGHT = 480;
 const int WIDTH = 640;
@@ -94,32 +97,22 @@ void mainLoop(GLFWwindow *window)
             0.5f,  0.5f,
             -0.5f,  0.5f
     };
-    unsigned int indexes[] = {
+    unsigned int indeces[] = {
             0, 1, 2,
             2, 3, 0
     };
-    GLuint vertexArray;
-    glGenVertexArrays(1, &vertexArray);
-    glBindVertexArray(vertexArray);
+
+    mltcore::VertexArray array;
 
     mltcore::BufferLayout layout({
         mltcore::BufferElement::createBuffer<mltype::Float2>()
     });
 
-    mltcore::VertexBuffer buffer(vertices, 4 * 2 * sizeof(float), layout);
+    auto vb = multik::MakeRef<mltcore::VertexBuffer>(vertices, 4 * 2 * sizeof(float), layout);
+    auto ib = multik::MakeRef<mltcore::IndexBuffer>(indeces, 6);
 
-    auto element = *layout.begin();
-    glVertexAttribPointer(0, 
-        element.Type.Count, 
-        mltype::gl::toEnum(element.Type.Type),
-        mltype::gl::boolean(element.Normalized), 
-        element.Type.Size,
-        (GLvoid*) element.Offset);
-    glEnableVertexAttribArray(0);
-
-    mltcore::IndexBuffer indexBuffer(indexes, 6);
-
-    glBindVertexArray(vertexArray);
+    array.AppendVertexBuffer(vb);
+    array.ResetIndexBuffer(ib);
 
     while(!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
@@ -129,19 +122,14 @@ void mainLoop(GLFWwindow *window)
         glClearColor(0.255f, 0.063f, 0.127f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        buffer.Bind();
-        indexBuffer.Bind();
-
+        array.Bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-        buffer.Unbind();
-        indexBuffer.Unbind();
+        array.Unbind();
 
         glfwSwapBuffers(window);
 
     }
     glDeleteProgram(program);
-    glDeleteVertexArrays(1, &vertexArray);
 }
 
 int main(const int argc, const char **argv)

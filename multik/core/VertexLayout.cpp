@@ -17,7 +17,10 @@
 namespace multik::core
 {
     BufferLayout::BufferLayout(const std::initializer_list<BufferElement> &elements)
-        : elements(elements) { }
+        : elements(elements), stride(0) 
+        {
+            evaluate();
+        }
 
     typename std::vector<BufferElement>::const_iterator BufferLayout::begin() const
     {
@@ -36,6 +39,12 @@ namespace multik::core
         {
             el.Offset = offset;
             offset += el.Type.Size;
+            stride += el.Type.Size;
         }
+    }
+
+    uint32_t BufferLayout::getStride() const
+    {
+        return this->stride;
     }
 }
