@@ -21,6 +21,7 @@
 #include "core/VertexBuffer.hpp"
 #include "core/IndexBuffer.hpp"
 #include "core/VertexArray.hpp"
+#include "core/Shader.hpp"
 #include "types/reference.hpp"
 #include "types/GLTypes.hpp"
 
@@ -28,68 +29,12 @@
 const int HEIGHT = 480;
 const int WIDTH = 640;
 
-static unsigned int CompileShader(unsigned int type, const std::string &src)
-{
-    unsigned int shader = glCreateShader(type);
-    const char *ps = src.c_str();
-    glShaderSource(shader, 1, &ps, nullptr);
-    glCompileShader(shader);
-
-    int result;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &result);
-    if (result == GL_FALSE)
-    {
-        int len;
-        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
-        char *message = new char[len + 1];
-        glGetShaderInfoLog(shader, len, &len, message);
-        std::cerr << "compile shader error: " << message << std::endl;
-        delete[] message;
-    }
-
-    return shader;
-}
-
-static unsigned int CreateShader(const std::string &vertexShader, const std::string &fragmentShader)
-{
-    unsigned int program = glCreateProgram();
-    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
-
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
-    glValidateProgram(program);
-
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-    return program;
-}
-
-static unsigned int LoadShader(const std::string &vertexPath, const std::string &fragmentPath)
-{
-    std::ifstream vertexFile(vertexPath);
-    std::string vstr((std::istreambuf_iterator<char>(vertexFile)),
-                    std::istreambuf_iterator<char>());
-
-    std::ifstream fragmentFile(fragmentPath);
-    std::string fstr((std::istreambuf_iterator<char>(fragmentFile)),
-                    std::istreambuf_iterator<char>());
-
-    unsigned int result = CreateShader(vstr, fstr);
-    vertexFile.close();
-    fragmentFile.close();
-    return result;
-}
-
 void mainLoop(GLFWwindow *window)
 {
     namespace mltcore = multik::core;
     namespace mltype = multik::types;
 
-    unsigned int program =
-            LoadShader("shaders/square/color.vertex.glsl", "shaders/square/color.fragment.glsl");
-    glUseProgram(program);
+    auto shader = mltcore::Shader::ReadFiles("shaders/square/color.vertex.glsl", "shaders/square/color.fragment.glsl");
 
     float vertices[] = {
             -0.5f, -0.5f,
@@ -127,9 +72,7 @@ void mainLoop(GLFWwindow *window)
         array.Unbind();
 
         glfwSwapBuffers(window);
-
     }
-    glDeleteProgram(program);
 }
 
 int main(const int argc, const char **argv)
