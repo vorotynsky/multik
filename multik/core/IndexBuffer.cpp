@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <GL/glew.h>
+#include <gl.h>
 #include "IndexBuffer.hpp"
 
 multik::core::IndexBuffer::IndexBuffer(const unsigned int *indexes, unsigned short count)

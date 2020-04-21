@@ -14,7 +14,7 @@
 
 #include "Shader.hpp"
 
-#include <GL/glew.h>
+#include <gl.h>
 #include <stdexcept>
 #include <fstream>
 

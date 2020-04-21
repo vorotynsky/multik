@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include <GL/gl.h>
+#include <gl.h>
 #include "numeric.hpp"
 
 namespace multik::types::gl

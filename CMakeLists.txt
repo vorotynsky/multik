@@ -5,4 +5,5 @@ project(multik)
 
 set(CMAKE_EXECUTABLE_SUFFIX ".exe")
 
+add_subdirectory(cmake/glheader)
 add_subdirectory(multik)

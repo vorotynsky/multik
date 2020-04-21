@@ -12,8 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include <gl.h>
 
 #include <iostream>
 #include <fstream>
