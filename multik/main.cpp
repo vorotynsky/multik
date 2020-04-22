@@ -23,85 +23,79 @@
 #include "core/Shader.hpp"
 #include "types/reference.hpp"
 #include "types/GLTypes.hpp"
+#include "platform/GlfwApplication.hpp"
 
 
-const int HEIGHT = 480;
-const int WIDTH = 640;
+namespace mltcore = multik::core;
+namespace mltype = multik::types;
 
-void mainLoop(GLFWwindow *window)
+class MainApp final : public multik::platform::GlfwApplication
 {
-    namespace mltcore = multik::core;
-    namespace mltype = multik::types;
+protected:
+    void Draw() override
+    {
+        shader->Bind();
 
-    auto shader = mltcore::Shader::ReadFiles("shaders/square/color.vertex.glsl", "shaders/square/color.fragment.glsl");
+        square->Bind();
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        square->Unbind();
+    }
 
-    float vertices[] = {
+    void Init() override
+    {
+        multik::platform::GlfwApplication::Init();
+
+        shader = mltcore::Shader::ReadFiles(
+                "shaders/square/color.vertex.glsl",
+                "shaders/square/color.fragment.glsl"
+            );
+
+        square = multik::MakeUniq<mltcore::VertexArray>();
+
+        mltcore::BufferLayout layout({
+            mltcore::BufferElement::createBuffer<mltype::Float2>()
+        });
+
+        auto vb = multik::MakeRef<mltcore::VertexBuffer>(vertices, 4 * 2 * sizeof(float), layout);
+        auto ib = multik::MakeRef<mltcore::IndexBuffer>(indeces, 6);
+
+        square->AppendVertexBuffer(vb);
+        square->ResetIndexBuffer(ib);
+    }
+
+public:
+    MainApp() : multik::platform::GlfwApplication(640, 480) 
+    { 
+        vertices = new float[4 * 2] {
             -0.5f, -0.5f,
-            0.5f, -0.5f,
-            0.5f,  0.5f,
+             0.5f, -0.5f,
+             0.5f,  0.5f,
             -0.5f,  0.5f
-    };
-    unsigned int indeces[] = {
+        };
+        indeces = new unsigned int[6] {
             0, 1, 2,
             2, 3, 0
-    };
-
-    mltcore::VertexArray array;
-
-    mltcore::BufferLayout layout({
-        mltcore::BufferElement::createBuffer<mltype::Float2>()
-    });
-
-    auto vb = multik::MakeRef<mltcore::VertexBuffer>(vertices, 4 * 2 * sizeof(float), layout);
-    auto ib = multik::MakeRef<mltcore::IndexBuffer>(indeces, 6);
-
-    array.AppendVertexBuffer(vb);
-    array.ResetIndexBuffer(ib);
-
-    while(!glfwWindowShouldClose(window)) {
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glfwPollEvents();
-
-        glClearColor(0.255f, 0.063f, 0.127f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        array.Bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        array.Unbind();
-
-        glfwSwapBuffers(window);
+        };
     }
-}
+
+    MainApp(const MainApp &other) = delete;
+
+    virtual ~MainApp()
+    {
+        delete vertices;
+        delete indeces;
+    }
+
+private:
+    multik::Uniq<multik::core::VertexArray> square;
+    multik::Ref<multik::core::Shader> shader;
+    float *vertices;
+    unsigned int *indeces;
+};
 
 int main(const int argc, const char **argv)
-{    
-    glfwInit();
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-    GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Multik", nullptr, nullptr);
-    if (window == nullptr)
-        return 1;
-    std::cout << glGetString(GL_VERSION) << std::endl;
-    
-    glfwMakeContextCurrent(window);
-
-    glewExperimental = GL_TRUE;
-    glewInit();
-
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);
-
-
-    mainLoop(window);
-
-
-    glfwTerminate();
-
+{
+    MainApp app;
+    app.Run();
     return 0;
 }
