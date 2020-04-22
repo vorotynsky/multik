@@ -14,12 +14,14 @@
 
 #pragma once
 
+#include "../types/numeric.hpp"
+
 namespace multik::core
 {
     class IndexBuffer
     {
     public:
-        IndexBuffer(const unsigned int *indexes, unsigned short count);
+        IndexBuffer(const unsigned int *indexes, types::ssize_t count);
         ~IndexBuffer();
 
         IndexBuffer(const IndexBuffer &other) = delete;
@@ -27,8 +29,11 @@ namespace multik::core
         void Bind();
         void Unbind();
 
+        types::ssize_t Count() const;
+
     private:
         unsigned int id;
+        types::ssize_t count;
     };
 }
 

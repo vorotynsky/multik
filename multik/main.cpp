@@ -21,10 +21,10 @@
 #include "core/IndexBuffer.hpp"
 #include "core/VertexArray.hpp"
 #include "core/Shader.hpp"
+#include "core/Render.hpp"
 #include "types/reference.hpp"
 #include "types/GLTypes.hpp"
 #include "platform/GlfwApplication.hpp"
-
 
 namespace mltcore = multik::core;
 namespace mltype = multik::types;
@@ -34,11 +34,7 @@ class MainApp final : public multik::platform::GlfwApplication
 protected:
     void Draw() override
     {
-        shader->Bind();
-
-        square->Bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-        square->Unbind();
+        renderer.Draw(*square, *shader);
     }
 
     void Init() override
@@ -49,6 +45,17 @@ protected:
                 "shaders/square/color.vertex.glsl",
                 "shaders/square/color.fragment.glsl"
             );
+        
+        float vertices[4 * 2] = {
+            -0.5f, -0.5f,
+             0.5f, -0.5f,
+             0.5f,  0.5f,
+            -0.5f,  0.5f
+        };
+        unsigned int indeces[6] = {
+            0, 1, 2,
+            2, 3, 0
+        };
 
         square = multik::MakeUniq<mltcore::VertexArray>();
 
@@ -64,33 +71,17 @@ protected:
     }
 
 public:
-    MainApp() : multik::platform::GlfwApplication(640, 480) 
-    { 
-        vertices = new float[4 * 2] {
-            -0.5f, -0.5f,
-             0.5f, -0.5f,
-             0.5f,  0.5f,
-            -0.5f,  0.5f
-        };
-        indeces = new unsigned int[6] {
-            0, 1, 2,
-            2, 3, 0
-        };
-    }
+    MainApp() 
+        : multik::platform::GlfwApplication(640, 480), renderer() { }
 
     MainApp(const MainApp &other) = delete;
 
-    virtual ~MainApp()
-    {
-        delete vertices;
-        delete indeces;
-    }
+    virtual ~MainApp() = default;
 
 private:
     multik::Uniq<multik::core::VertexArray> square;
     multik::Ref<multik::core::Shader> shader;
-    float *vertices;
-    unsigned int *indeces;
+    mltcore::Renderer renderer;
 };
 
 int main(const int argc, const char **argv)
