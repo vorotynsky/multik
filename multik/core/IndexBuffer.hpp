@@ -36,5 +36,3 @@ namespace multik::core
         types::ssize_t count;
     };
 }
-
-

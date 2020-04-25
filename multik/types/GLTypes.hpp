@@ -77,5 +77,4 @@ namespace multik::types::gl
             return GL_INVALID_ENUM;
         }
     }
-
 }

@@ -10,8 +10,6 @@ file(GLOB multikSrc
 
 add_executable(multik ${multikSrc})
 
-include_directories(glfw3 ${GLUT_INCLUDE_DIRS})
-
 target_link_libraries(multik glheader)
 
 add_custom_target(copy_shaders)
@@ -22,4 +20,3 @@ add_custom_command(TARGET copy_shaders POST_BUILD
 
 add_custom_target(build_multik_shaders)
 add_dependencies(build_multik_shaders multik copy_shaders)
-

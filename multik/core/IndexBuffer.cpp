@@ -40,7 +40,7 @@ namespace multik::core
 
     void IndexBuffer::Unbind()
     {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
     types::ssize_t IndexBuffer::Count() const
@@ -48,4 +48,3 @@ namespace multik::core
         return this->count;
     }
 }
-

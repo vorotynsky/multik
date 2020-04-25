@@ -44,6 +44,7 @@ namespace multik::core
         std::vector<BufferElement>::const_iterator end() const;
 
         uint32_t getStride() const;
+
     private:
         void evaluate();
         uint32_t stride;

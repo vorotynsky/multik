@@ -11,6 +11,7 @@ find_package(GLEW REQUIRED)
 
 add_library(glheader INTERFACE)
 
+include_directories(glfw3 ${GLUT_INCLUDE_DIRS})
 target_include_directories(glheader INTERFACE .)
 target_compile_definitions(glheader INTERFACE LIBRARY_HEADER_ONLY)
 target_link_libraries(glheader INTERFACE GLEW OpenGL::GL glfw)

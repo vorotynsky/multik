@@ -45,12 +45,12 @@ namespace multik::types
         }
 
     MULTIK_NUMERIC_TYPES(signed char, NumericType::SByte)
-    MULTIK_NUMERIC_TYPES(signed short, NumericType::SByte)
-    MULTIK_NUMERIC_TYPES(signed int, NumericType::SByte)
+    MULTIK_NUMERIC_TYPES(signed short, NumericType::SShort)
+    MULTIK_NUMERIC_TYPES(signed int, NumericType::SInt)
 
     MULTIK_NUMERIC_TYPES(unsigned char, NumericType::UByte)
-    MULTIK_NUMERIC_TYPES(unsigned short, NumericType::UByte)
-    MULTIK_NUMERIC_TYPES(unsigned int, NumericType::UByte)
+    MULTIK_NUMERIC_TYPES(unsigned short, NumericType::UShort)
+    MULTIK_NUMERIC_TYPES(unsigned int, NumericType::UInt)
 
     MULTIK_NUMERIC_TYPES(bool, NumericType::Boolean)
     MULTIK_NUMERIC_TYPES(float, NumericType::SFloat)

@@ -15,7 +15,6 @@
 #include <gl.h>
 #include "VertexBuffer.hpp"
 
-
 namespace multik::core 
 {
     VertexBuffer::VertexBuffer(const void *data, unsigned short size, const BufferLayout &layout)

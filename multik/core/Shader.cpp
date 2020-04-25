@@ -90,6 +90,4 @@ namespace multik::core
 
         return shader;
     }
-
-
 }

@@ -18,9 +18,9 @@ namespace multik::core
 {
     BufferLayout::BufferLayout(const std::initializer_list<BufferElement> &elements)
         : elements(elements), stride(0) 
-        {
-            evaluate();
-        }
+    {
+        evaluate();
+    }
 
     typename std::vector<BufferElement>::const_iterator BufferLayout::begin() const
     {
