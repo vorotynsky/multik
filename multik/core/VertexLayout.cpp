@@ -35,7 +35,7 @@ namespace multik::core
     void BufferLayout::evaluate()
     {
         int offset = 0;
-        for (auto el : elements)
+        for (auto &el : elements)
         {
             el.Offset = offset;
             offset += el.Type.Size;
