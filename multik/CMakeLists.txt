@@ -1,9 +1,22 @@
 cmake_minimum_required(VERSION 2.8)
 
-add_executable(multik "main.cpp")
 
-find_package(OpenGL REQUIRED)
-find_package(glfw3 REQUIRED)
-include_directories(glfw3  ${GLUT_INCLUDE_DIRS})
+add_compile_definitions(GLEW_STATIC)
 
-target_link_libraries(multik glfw ${OPENGL_LIBRARIES} ${GLUT_LIBRARY})
+file(GLOB multikSrc
+    "*/*.hpp"
+    "*/*.cpp"
+    "main.cpp")
+
+add_executable(multik ${multikSrc})
+
+target_link_libraries(multik glheader)
+
+add_custom_target(copy_shaders)
+add_custom_command(TARGET copy_shaders POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    "${PROJECT_SOURCE_DIR}/shaders"
+    $<TARGET_FILE_DIR:multik>/shaders)
+
+add_custom_target(build_multik_shaders)
+add_dependencies(build_multik_shaders multik copy_shaders)
