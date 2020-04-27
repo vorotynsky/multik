@@ -23,8 +23,8 @@ namespace multik::core
     unsigned int CompileShader(unsigned int type, const std::string &src);
 
     Shader::Shader(const std::string &vertex, const std::string &fragment)
+        : id (glCreateProgram())
     {
-        this->id = glCreateProgram();
         unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertex);
         unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragment);
 
@@ -89,5 +89,72 @@ namespace multik::core
         }
 
         return shader;
+    }
+
+
+    void Shader::SetUniform(const std::string &name, float value)
+    {
+        int location = IndexUniform(name);
+        if (location != -1)
+            glUniform1f(location, value);
+    }
+
+    void Shader::SetUniform(const std::string &name, int value)
+    {
+        int location = IndexUniform(name);
+        if (location != -1)
+            glUniform1i(location, value);
+    }
+
+
+    void Shader::SetUniform(const std::string &name, const glm::vec2 &value)
+    {
+        int location = IndexUniform(name);
+        if (location != -1)
+            glUniform2f(location, value.x, value.y);
+    }
+
+    void Shader::SetUniform(const std::string &name, const glm::vec3 &value)
+    {
+        int location = IndexUniform(name);
+        if (location != -1)
+            glUniform3f(location, value.x, value.y, value.z);
+    }
+
+    void Shader::SetUniform(const std::string &name, const glm::vec4 &value)
+    {
+        int location = IndexUniform(name);
+        if (location != -1)
+            glUniform4f(location, value.x, value.y, value.z, value.w);
+    }
+
+
+    void Shader::SetUniform(const std::string &name, const glm::mat2 &value)
+    {
+        int location = IndexUniform(name);
+        if (location != -1)
+            glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    }
+
+    void Shader::SetUniform(const std::string &name, const glm::mat3 &value)
+    {
+        int location = IndexUniform(name);
+        if (location != -1)
+            glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    }
+
+    void Shader::SetUniform(const std::string &name, const glm::mat4 &value)
+    {
+        int location = IndexUniform(name);
+        if (location != -1)
+            glUniformMatrix2fv(location, 1, GL_FALSE, glm::value_ptr(value));
+    }
+
+    int Shader::IndexUniform(const std::string &name)
+    {
+        auto it = locations.find(name);   
+        if (it != locations.end())
+            return it->second;
+        return glGetUniformLocation(id, name.c_str());
     }
 }
