@@ -18,7 +18,7 @@
 #include <stdexcept>
 #include <fstream>
 
-namespace multik::core
+namespace multik::render
 {
     unsigned int CompileShader(unsigned int type, const std::string &src);
 

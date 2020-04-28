@@ -14,7 +14,7 @@
 
 #include "VertexLayout.hpp"
 
-namespace multik::core
+namespace multik::render
 {
     BufferLayout::BufferLayout(const std::initializer_list<BufferElement> &elements)
         : elements(elements), stride(0) 

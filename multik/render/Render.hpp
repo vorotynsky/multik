@@ -20,7 +20,7 @@
 #include "VertexArray.hpp"
 #include "Shader.hpp"
 
-namespace multik::core 
+namespace multik::render 
 {
     class Renderer
     {

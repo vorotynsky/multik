@@ -16,7 +16,7 @@
 #include "VertexArray.hpp"
 #include "../types/GLTypes.hpp"
 
-namespace multik::core
+namespace multik::render
 {
     VertexArray::VertexArray()
         : indexBuffer(nullptr), vertexBuffers(), vertexBufferId(0)

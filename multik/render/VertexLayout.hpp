@@ -19,7 +19,7 @@
 #include <initializer_list>
 #include "../types/Graphics.hpp"
 
-namespace multik::core
+namespace multik::render
 {
     struct BufferElement
     {

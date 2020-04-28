@@ -17,16 +17,16 @@
 #include <iostream>
 #include <fstream>
 
-#include "core/VertexBuffer.hpp"
-#include "core/IndexBuffer.hpp"
-#include "core/VertexArray.hpp"
-#include "core/Shader.hpp"
-#include "core/Render.hpp"
+#include "render/VertexBuffer.hpp"
+#include "render/IndexBuffer.hpp"
+#include "render/VertexArray.hpp"
+#include "render/Shader.hpp"
+#include "render/Render.hpp"
 #include "types/reference.hpp"
 #include "types/GLTypes.hpp"
 #include "platform/GlfwApplication.hpp"
 
-namespace mltcore = multik::core;
+namespace mltrender = multik::render;
 namespace mltype = multik::types;
 
 class MainApp final : public multik::platform::GlfwApplication
@@ -41,7 +41,7 @@ protected:
     {
         multik::platform::GlfwApplication::Init();
 
-        shader = mltcore::Shader::ReadFiles(
+        shader = mltrender::Shader::ReadFiles(
                 "shaders/square/color.vertex.glsl",
                 "shaders/square/color.fragment.glsl"
             );
@@ -57,14 +57,14 @@ protected:
             2, 3, 0
         };
 
-        square = multik::MakeUniq<mltcore::VertexArray>();
+        square = multik::MakeUniq<mltrender::VertexArray>();
 
-        mltcore::BufferLayout layout({
-            mltcore::BufferElement::createBuffer<mltype::Float2>()
+        mltrender::BufferLayout layout({
+            mltrender::BufferElement::createBuffer<mltype::Float2>()
         });
 
-        auto vb = multik::MakeRef<mltcore::VertexBuffer>(vertices, 4 * 2 * sizeof(float), layout);
-        auto ib = multik::MakeRef<mltcore::IndexBuffer>(indeces, 6);
+        auto vb = multik::MakeRef<mltrender::VertexBuffer>(vertices, 4 * 2 * sizeof(float), layout);
+        auto ib = multik::MakeRef<mltrender::IndexBuffer>(indeces, 6);
 
         square->AppendVertexBuffer(vb);
         square->ResetIndexBuffer(ib);
@@ -79,9 +79,9 @@ public:
     virtual ~MainApp() = default;
 
 private:
-    multik::Uniq<multik::core::VertexArray> square;
-    multik::Ref<multik::core::Shader> shader;
-    mltcore::Renderer renderer;
+    multik::Uniq<multik::render::VertexArray> square;
+    multik::Ref<multik::render::Shader> shader;
+    mltrender::Renderer renderer;
 };
 
 int main(const int argc, const char **argv)

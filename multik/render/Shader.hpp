@@ -19,7 +19,7 @@
 #include <string>
 #include "../types/reference.hpp"
 
-namespace multik::core
+namespace multik::render
 {
     class Shader
     {
