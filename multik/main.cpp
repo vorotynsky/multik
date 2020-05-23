@@ -21,10 +21,10 @@
 #include "render/IndexBuffer.hpp"
 #include "render/VertexArray.hpp"
 #include "render/Shader.hpp"
-#include "render/Render.hpp"
 #include "types/reference.hpp"
 #include "types/GLTypes.hpp"
 #include "platform/GlfwApplication.hpp"
+#include "graphics/Renderer.hpp"
 
 namespace mltrender = multik::render;
 namespace mltype = multik::types;
@@ -81,7 +81,7 @@ public:
 private:
     multik::Uniq<multik::render::VertexArray> square;
     multik::Ref<multik::render::Shader> shader;
-    mltrender::Renderer renderer;
+    multik::graphics::Renderer renderer;
 };
 
 int main(const int argc, const char **argv)
