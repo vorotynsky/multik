@@ -25,6 +25,7 @@
 #include "types/GLTypes.hpp"
 #include "platform/GlfwApplication.hpp"
 #include "graphics/Renderer.hpp"
+#include "graphics/common2d/Camera2D.hpp"
 
 namespace mltrender = multik::render;
 namespace mltype = multik::types;
@@ -34,6 +35,8 @@ class MainApp final : public multik::platform::GlfwApplication
 protected:
     void Draw() override
     {
+        auto mvp = camera.getMVPMatrix(glm::mat4(1.0));
+        shader->SetUniform("u_mvp", mvp);
         renderer.Draw(*square, *shader);
     }
 
@@ -72,7 +75,7 @@ protected:
 
 public:
     MainApp() 
-        : multik::platform::GlfwApplication(640, 480), renderer() { }
+        : multik::platform::GlfwApplication(640, 480), camera(-2.0, 2.0, -1.5, 1.5) { }
 
     MainApp(const MainApp &other) = delete;
 
@@ -81,6 +84,8 @@ public:
 private:
     multik::Uniq<multik::render::VertexArray> square;
     multik::Ref<multik::render::Shader> shader;
+    
+    multik::graphics::common2d::Camera2D camera;
     multik::graphics::Renderer renderer;
 };
 
