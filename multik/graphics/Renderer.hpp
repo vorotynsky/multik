@@ -4,7 +4,8 @@
 
 #include <gl.h>
 
-#include "../render/IndexBuffer.hpp"
+#include "Shape.hpp"
+#include "Camera.hpp"
 #include "../render/VertexArray.hpp"
 #include "../render/Shader.hpp"
 
@@ -16,6 +17,12 @@ namespace multik::graphics
         void ClearColor(const glm::vec4 &color);
         void Clear();
 
+        void Begin(const Ref<Camera> &camera);
+        void End();
+
         void Draw(render::VertexArray &array, render::Shader &shader);
+        void Draw(Shape &shape);
+    private:
+        Ref<Camera> activeCamera;  
     };
 }

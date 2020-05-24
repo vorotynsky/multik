@@ -14,7 +14,27 @@ namespace multik::graphics
 
         array.Unbind();
         shader.Unbind();
-    }    
+    }
+
+    void Renderer::Begin(const Ref<Camera> &camera)
+    {
+        this->activeCamera = camera;
+    }
+
+    void Renderer::End()
+    {
+        activeCamera.reset();
+    }
+
+
+    void Renderer::Draw(Shape &shape)
+    {
+        shape.Bind();
+        auto mvp = activeCamera->getMVPMatrix(shape.getModelMatrix());
+        shape.setMVP(mvp);
+        glDrawElements(GL_TRIANGLES, shape.IndexCount(), GL_UNSIGNED_INT, nullptr);
+        shape.Unbind();
+    }
 
     void Renderer::ClearColor(const glm::vec4 &color) 
     {

@@ -26,25 +26,31 @@
 #include "platform/GlfwApplication.hpp"
 #include "graphics/Renderer.hpp"
 #include "graphics/common2d/Camera2D.hpp"
+#include "graphics/common2d/PrimitiveShape.hpp"
 
 namespace mltrender = multik::render;
 namespace mltype = multik::types;
+namespace mltg = multik::graphics;
 
 class MainApp final : public multik::platform::GlfwApplication
 {
 protected:
     void Draw() override
     {
-        auto mvp = camera.getMVPMatrix(glm::mat4(1.0));
-        shader->SetUniform("u_mvp", mvp);
-        renderer.Draw(*square, *shader);
+        renderer.ClearColor({0.1, 0.2, 0.3, 1.0f});
+        renderer.Clear();
+        renderer.Begin(camera);
+        {
+            renderer.Draw(*shape);
+        }
+        renderer.End();
     }
 
     void Init() override
     {
         multik::platform::GlfwApplication::Init();
 
-        shader = mltrender::Shader::ReadFiles(
+        auto shader = mltrender::Shader::ReadFiles(
                 "shaders/square/color.vertex.glsl",
                 "shaders/square/color.fragment.glsl"
             );
@@ -60,7 +66,7 @@ protected:
             2, 3, 0
         };
 
-        square = multik::MakeUniq<mltrender::VertexArray>();
+        auto square = multik::MakeRef<mltrender::VertexArray>();
 
         mltrender::BufferLayout layout({
             mltrender::BufferElement::createBuffer<mltype::Float2>()
@@ -71,22 +77,25 @@ protected:
 
         square->AppendVertexBuffer(vb);
         square->ResetIndexBuffer(ib);
+
+        shape = multik::MakeUniq<mltg::common2d::PrimitiveShape>(square, shader);
     }
 
 public:
     MainApp() 
-        : multik::platform::GlfwApplication(640, 480), camera(-2.0, 2.0, -1.5, 1.5) { }
+        : multik::platform::GlfwApplication(640, 480) 
+        {
+            camera = multik::MakeRef<mltg::common2d::Camera2D>(-2.0, 2.0, -1.5, 1.5);
+        }
 
     MainApp(const MainApp &other) = delete;
 
     virtual ~MainApp() = default;
 
 private:
-    multik::Uniq<multik::render::VertexArray> square;
-    multik::Ref<multik::render::Shader> shader;
-    
-    multik::graphics::common2d::Camera2D camera;
-    multik::graphics::Renderer renderer;
+    mltg::Renderer renderer;
+    multik::Ref<mltg::Camera> camera;
+    multik::Uniq<mltg::Shape> shape;
 };
 
 int main(const int argc, const char **argv)
