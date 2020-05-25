@@ -20,9 +20,9 @@
 #include "render/VertexBuffer.hpp"
 #include "render/IndexBuffer.hpp"
 #include "render/VertexArray.hpp"
-#include "render/Shader.hpp"
 #include "types/reference.hpp"
 #include "types/GLTypes.hpp"
+#include "core/ShaderCache.hpp"
 #include "platform/GlfwApplication.hpp"
 #include "graphics/Renderer.hpp"
 #include "graphics/common2d/Camera2D.hpp"
@@ -50,11 +50,8 @@ protected:
     {
         multik::platform::GlfwApplication::Init();
 
-        auto shader = mltrender::Shader::ReadFiles(
-                "shaders/square/color.vertex.glsl",
-                "shaders/square/color.fragment.glsl"
-            );
-        
+        auto shader = multik::core::ShaderCache::Get("square/color");
+
         float vertices[4 * 2] = {
             -0.5f, -0.5f,
              0.5f, -0.5f,
