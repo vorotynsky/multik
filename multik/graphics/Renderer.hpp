@@ -20,7 +20,7 @@ namespace multik::graphics
         void Begin(const Ref<Camera> &camera);
         void End();
 
-        void Draw(render::VertexArray &array, render::Shader &shader);
+        void Draw(render::VertexArray &array, render::Shader &shader, render::DrawCall pen);
         void Draw(Shape &shape);
     private:
         Ref<Camera> activeCamera;  

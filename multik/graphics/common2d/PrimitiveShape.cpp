@@ -5,7 +5,10 @@
 namespace multik::graphics::common2d
 {
     PrimitiveShape::PrimitiveShape(const Ref<render::VertexArray> va, const Ref<render::Shader> &shader)
-        : model(1.0f), array(va), shader(shader) { }
+        : model(1.0f), array(va), shader(shader), pen() { }
+
+    PrimitiveShape::PrimitiveShape(const Ref<render::VertexArray> va, const Ref<render::Shader> &shader, render::DrawCall pen)
+        : model(1.0f), array(va), shader(shader), pen(pen) { }
 
     int PrimitiveShape::IndexCount() const
     {
@@ -25,6 +28,11 @@ namespace multik::graphics::common2d
     void PrimitiveShape::setMVP(const glm::mat4 &mvp)
     {
         shader->SetUniform("u_mvp", mvp);
+    }
+
+    typename render::DrawCall PrimitiveShape::Pen() const
+    {
+        return this->pen;
     }
 
     void PrimitiveShape::Bind()

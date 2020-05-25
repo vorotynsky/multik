@@ -15,6 +15,7 @@ namespace multik::graphics::common2d
     {
     public:
         PrimitiveShape(const Ref<render::VertexArray> va, const Ref<render::Shader> &shader);
+        PrimitiveShape(const Ref<render::VertexArray> va, const Ref<render::Shader> &shader, render::DrawCall pen);
         virtual ~PrimitiveShape() = default;
 
         int IndexCount() const override;
@@ -22,11 +23,13 @@ namespace multik::graphics::common2d
         void setModelMatrix(const glm::mat4 &matrix) override;
 
         void setMVP(const glm::mat4 &mvp) override;
+        render::DrawCall Pen() const override;
 
         void Bind() override;
         void Unbind() override;
 
     private:
+        render::DrawCall pen;
         glm::mat4 model;
         Ref<render::Shader> shader;
         Ref<render::VertexArray> array;

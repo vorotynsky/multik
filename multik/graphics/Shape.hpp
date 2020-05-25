@@ -4,6 +4,8 @@
 
 #include <gl.h>
 
+#include "../render/DrawCall.hpp"
+
 namespace multik::graphics
 {
     class Shape
@@ -17,6 +19,7 @@ namespace multik::graphics
         virtual void setModelMatrix(const glm::mat4 &matrix) = 0;
 
         virtual void setMVP(const glm::mat4 &mvp) = 0;
+        virtual render::DrawCall Pen() const = 0;
         virtual int  IndexCount() const = 0;
 
         virtual void Bind() = 0;
