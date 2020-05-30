@@ -152,9 +152,11 @@ namespace multik::render
 
     int Shader::IndexUniform(const std::string &name)
     {
-        auto it = locations.find(name);   
+        auto it = locations.find(name);
         if (it != locations.end())
             return it->second;
-        return glGetUniformLocation(id, name.c_str());
+        int loc = glGetUniformLocation(id, name.c_str());
+        locations[name] = loc;
+        return loc;
     }
 }
