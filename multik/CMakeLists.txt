@@ -6,6 +6,8 @@ add_compile_definitions(GLEW_STATIC)
 file(GLOB multikSrc
     "*/*.hpp"
     "*/*.cpp"
+    "*/*/*.hpp"
+    "*/*/*.cpp"
     "main.cpp")
 
 add_executable(multik ${multikSrc})

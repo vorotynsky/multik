@@ -17,35 +17,41 @@
 #include <iostream>
 #include <fstream>
 
-#include "core/VertexBuffer.hpp"
-#include "core/IndexBuffer.hpp"
-#include "core/VertexArray.hpp"
-#include "core/Shader.hpp"
-#include "core/Render.hpp"
+#include "render/VertexBuffer.hpp"
+#include "render/IndexBuffer.hpp"
+#include "render/VertexArray.hpp"
 #include "types/reference.hpp"
 #include "types/GLTypes.hpp"
+#include "core/ShaderCache.hpp"
 #include "platform/GlfwApplication.hpp"
+#include "graphics/Renderer.hpp"
+#include "graphics/common2d/Camera2D.hpp"
+#include "graphics/common2d/PrimitiveShape.hpp"
 
-namespace mltcore = multik::core;
+namespace mltrender = multik::render;
 namespace mltype = multik::types;
+namespace mltg = multik::graphics;
 
 class MainApp final : public multik::platform::GlfwApplication
 {
 protected:
     void Draw() override
     {
-        renderer.Draw(*square, *shader);
+        renderer.ClearColor({0.1, 0.2, 0.3, 1.0f});
+        renderer.Clear();
+        renderer.Begin(camera);
+        {
+            renderer.Draw(*shape);
+        }
+        renderer.End();
     }
 
     void Init() override
     {
         multik::platform::GlfwApplication::Init();
 
-        shader = mltcore::Shader::ReadFiles(
-                "shaders/square/color.vertex.glsl",
-                "shaders/square/color.fragment.glsl"
-            );
-        
+        auto shader = multik::core::ShaderCache::Get("square/color");
+
         float vertices[4 * 2] = {
             -0.5f, -0.5f,
              0.5f, -0.5f,
@@ -57,31 +63,36 @@ protected:
             2, 3, 0
         };
 
-        square = multik::MakeUniq<mltcore::VertexArray>();
+        auto square = multik::MakeRef<mltrender::VertexArray>();
 
-        mltcore::BufferLayout layout({
-            mltcore::BufferElement::createBuffer<mltype::Float2>()
+        mltrender::BufferLayout layout({
+            mltrender::BufferElement::createBuffer<mltype::Float2>()
         });
 
-        auto vb = multik::MakeRef<mltcore::VertexBuffer>(vertices, 4 * 2 * sizeof(float), layout);
-        auto ib = multik::MakeRef<mltcore::IndexBuffer>(indeces, 6);
+        auto vb = multik::MakeRef<mltrender::VertexBuffer>(vertices, 4 * 2 * sizeof(float), layout);
+        auto ib = multik::MakeRef<mltrender::IndexBuffer>(indeces, 6);
 
         square->AppendVertexBuffer(vb);
         square->ResetIndexBuffer(ib);
+
+        shape = multik::MakeUniq<mltg::common2d::PrimitiveShape>(square, shader);
     }
 
 public:
     MainApp() 
-        : multik::platform::GlfwApplication(640, 480), renderer() { }
+        : multik::platform::GlfwApplication(640, 480) 
+        {
+            camera = multik::MakeRef<mltg::common2d::Camera2D>(-2.0, 2.0, -1.5, 1.5);
+        }
 
     MainApp(const MainApp &other) = delete;
 
     virtual ~MainApp() = default;
 
 private:
-    multik::Uniq<multik::core::VertexArray> square;
-    multik::Ref<multik::core::Shader> shader;
-    mltcore::Renderer renderer;
+    mltg::Renderer renderer;
+    multik::Ref<mltg::Camera> camera;
+    multik::Uniq<mltg::Shape> shape;
 };
 
 int main(const int argc, const char **argv)

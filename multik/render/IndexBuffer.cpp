@@ -15,7 +15,7 @@
 #include <gl.h>
 #include "IndexBuffer.hpp"
 
-namespace multik::core
+namespace multik::render
 {
     IndexBuffer::IndexBuffer(const unsigned int *indexes, unsigned short count)
         : count(count)

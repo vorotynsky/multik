@@ -1,11 +1,11 @@
 // Copyright 2020 Vorotynsky Maxim
-//
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,24 +15,25 @@
 #pragma once
 
 #include "../types/numeric.hpp"
+#include "VertexLayout.hpp"
 
-namespace multik::core
+namespace multik::render
 {
-    class IndexBuffer
+    class VertexBuffer
     {
     public:
-        IndexBuffer(const unsigned int *indexes, types::ssize_t count);
-        ~IndexBuffer();
+        VertexBuffer(const void *data, types::ssize_t size, const BufferLayout &layout);
+        ~VertexBuffer();
 
-        IndexBuffer(const IndexBuffer &other) = delete;
+        VertexBuffer(const VertexBuffer &other) = delete;
+
+        const BufferLayout &getLayout() const;
 
         void Bind();
         void Unbind();
 
-        types::ssize_t Count() const;
-
     private:
         unsigned int id;
-        types::ssize_t count;
+        BufferLayout layout;
     };
 }

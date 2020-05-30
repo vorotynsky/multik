@@ -28,12 +28,7 @@ namespace multik::platform
 
     void GlfwApplication::Loop()
     {
-        glClear(GL_COLOR_BUFFER_BIT);
-
         glfwPollEvents();
-
-        glClearColor(0.255f, 0.063f, 0.127f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
 
         if (glfwWindowShouldClose(window))
             Close();
