@@ -20,15 +20,15 @@ case $1 in
     "config" | "configure") 
         rm * -rf
         cmake ..
+        cmake --build . --target sandbox
         cmake --build . --target copy_shaders
-        cmake --build . --target build_multik_shaders
         ;;
     "shader" | "shaders")
         cmake --build . --target copy_shaders ;;
-    "build" | "multik")
-        cmake --build . ;;
+    "build" | "sandbox")
+        cmake --build . --target sandbox ;;
     "-h" | "help") help ;;
 esac
 
-cd multik/
-./multik.exe
+cd sandbox/
+./sandbox.exe
