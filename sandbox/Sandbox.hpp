@@ -8,6 +8,7 @@
 #include <multik/graphics/Renderer.hpp>
 
 #include "Scene.hpp"
+#include "Parser.hpp"
 
 namespace mltg = multik::graphics;
 
@@ -23,7 +24,9 @@ public:
     virtual ~SandboxApp() = default;
 
 private:
+    bool swaped = false;
     Scene scene;
+    CommandParser parser;
     mltg::Renderer renderer;
     multik::Ref<mltg::Camera> camera;
 };

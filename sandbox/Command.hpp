@@ -13,7 +13,7 @@ struct ICommand
 class Command final : public ICommand
 {
 public:
-    static Command *tracnsform(const std::string &name, float x, float y);
+    static Command *transform(const std::string &name, float x, float y);
     static Command *scale(const std::string &name, float x, float y);
     static Command *rotate(const std::string &name, float angle);
 

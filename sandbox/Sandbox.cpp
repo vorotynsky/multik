@@ -8,6 +8,13 @@
 
 void SandboxApp::Draw()
 {
+    if (swaped)
+    {
+        auto cmd = parser.next();
+        scene.Apply(cmd);
+        delete cmd;
+    }
+
     renderer.ClearColor({0.1, 0.2, 0.3, 1.0});
     renderer.Clear();
     renderer.Begin(camera);
@@ -15,19 +22,20 @@ void SandboxApp::Draw()
         scene.DrawAll(renderer);
     }
     renderer.End();
+    swaped = !swaped;  
 }
 
 void SandboxApp::Init()
 {
     multik::platform::GlfwApplication::Init();
 
-    scene.AppendLine("line1", -2.0, -1.5,  4.0, 3.0);
-    scene.AppendLine("line2",  2.0, -1.5, -4.0, 3.0);
-    scene.AppendRect("rect1", -1.0, -0.75, 2.0, 1.5);
+    scene.AppendLine("[line1]", -2.0, -1.5,  4.0, 3.0);
+    scene.AppendLine("[line2]",  2.0, -1.5, -4.0, 3.0);
+    scene.AppendRect("[rect1]", -1.0, -0.75, 2.0, 1.5);
 }
 
 SandboxApp::SandboxApp()
-    : multik::platform::GlfwApplication(640, 480)
+    : multik::platform::GlfwApplication(640, 480), parser(std::cin)
 {
     camera = multik::MakeRef<mltg::common2d::Camera2D>(-2.0, 2.0, -1.5, 1.5);
 }
