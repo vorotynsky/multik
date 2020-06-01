@@ -3,12 +3,16 @@
 #pragma once
 
 #include <map>
+#include <stack>
 #include <multik/graphics/Renderer.hpp>
+
+#include "Command.hpp"
 
 class Scene
 {
 public:
     void DrawAll(multik::graphics::Renderer &renderer);
+    void Apply(const ICommand *cmd);
 
     void AppendLine(const std::string &name, float x, float y, float w, float h);
     void AppendRect(const std::string &name, float x, float y, float w, float h);
@@ -19,4 +23,5 @@ private:
         multik::render::DrawCall pen);
 
     std::map<std::string, multik::Uniq<multik::graphics::Shape>> data;
+    std::stack<Command> history;
 };
