@@ -3,9 +3,7 @@
 #include "Sandbox.hpp"
 
 #include <multik/entry.hpp>
-#include <multik/core/ShaderCache.hpp>
 #include <multik/graphics/common2d/Camera2D.hpp>
-#include <multik/graphics/common2d/Ellipse.hpp>
 
 
 void SandboxApp::Draw()
@@ -14,7 +12,7 @@ void SandboxApp::Draw()
     renderer.Clear();
     renderer.Begin(camera);
     {
-        renderer.Draw(*shape);
+        scene.DrawAll(renderer);
     }
     renderer.End();
 }
@@ -23,7 +21,9 @@ void SandboxApp::Init()
 {
     multik::platform::GlfwApplication::Init();
 
-    shape = multik::MakeUniq<mltg::common2d::Ellipse>(glm::vec4(0.192f, 0.96f, 0.512f, 1.0f));
+    scene.AppendLine("line1", -2.0, -1.5,  4.0, 3.0);
+    scene.AppendLine("line2",  2.0, -1.5, -4.0, 3.0);
+    scene.AppendRect("rect1", -1.0, -0.75, 2.0, 1.5);
 }
 
 SandboxApp::SandboxApp()

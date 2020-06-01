@@ -4,9 +4,10 @@
 
 #include <multik/types/reference.hpp>
 #include <multik/platform/GlfwApplication.hpp>
-#include <multik/graphics/Shape.hpp>
 #include <multik/graphics/Camera.hpp>
 #include <multik/graphics/Renderer.hpp>
+
+#include "Scene.hpp"
 
 namespace mltg = multik::graphics;
 
@@ -22,7 +23,7 @@ public:
     virtual ~SandboxApp() = default;
 
 private:
+    Scene scene;
     mltg::Renderer renderer;
     multik::Ref<mltg::Camera> camera;
-    multik::Uniq<mltg::Shape> shape;
 };
