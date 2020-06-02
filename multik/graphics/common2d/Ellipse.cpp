@@ -72,6 +72,7 @@ namespace multik::graphics::common2d {
         glGetIntegerv(GL_VIEWPORT, viewport);
         
         shader->Bind();
+        shader->SetUniform("u_color", color);
         shader->SetUniform("u_resolution", glm::vec2(viewport[2], viewport[3]));
         array->Bind();
 	}
