@@ -36,5 +36,23 @@ ICommand *CommandParser::next()
         input >> deg;
         return Command::rotate(name, deg); 
     }
+
+    if (cmd == "line")
+    {
+        float p[4];
+        for (int i = 0; i < 4; i++) input >> p[i];
+        return new ConstructLine(name, p[0], p[1], p[2], p[3]);
+        
+    }
+    if (cmd == "rect")
+    {
+        float p[4];
+        for (int i = 0; i < 4; i++) input >> p[i];
+        return new ConstructRect(name, p[0], p[1], p[2], p[3]);
+    }
+    if (cmd == "ellipse")
+    {
+        return new ConstructEllipse(name);
+    }
     throw std::string("unexpected command");
 }

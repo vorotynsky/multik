@@ -14,8 +14,6 @@ public:
     void DrawAll(multik::graphics::Renderer &renderer);
     void Apply(const ICommand *cmd);
 
-    void AppendLine(const std::string &name, float x, float y, float w, float h);
-    void AppendRect(const std::string &name, float x, float y, float w, float h);
 private:
     void Append(const std::string &name, const std::string &shader,
         const multik::Ref<multik::render::VertexBuffer> &vb, 

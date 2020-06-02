@@ -28,10 +28,6 @@ void SandboxApp::Draw()
 void SandboxApp::Init()
 {
     multik::platform::GlfwApplication::Init();
-
-    scene.AppendLine("[line1]", -2.0, -1.5,  4.0, 3.0);
-    scene.AppendLine("[line2]",  2.0, -1.5, -4.0, 3.0);
-    scene.AppendRect("[rect1]", -1.0, -0.75, 2.0, 1.5);
 }
 
 SandboxApp::SandboxApp()
