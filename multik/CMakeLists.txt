@@ -22,3 +22,9 @@ add_custom_command(TARGET copy_shaders POST_BUILD
 
 add_custom_target(build_multik_shaders)
 add_dependencies(build_multik_shaders multik copy_shaders)
+
+set_target_properties(multik PROPERTIES
+        CXX_STANDARD 20
+        CXX_STANDARD_REQUIRED ON
+        CXX_EXTENSIONS OFF
+)
