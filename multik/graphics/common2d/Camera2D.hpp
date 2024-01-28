@@ -9,7 +9,7 @@ namespace multik::graphics::common2d
     class Camera2D : public Camera
     {
     public:
-        Camera2D(float left, float top, float right, float bottom);
+        Camera2D(float left, float right, float bottom, float top);
         virtual ~Camera2D() = default;
 
         glm::mat4 getMVPMatrix(const glm::mat4 &model) const override;

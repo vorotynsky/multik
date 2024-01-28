@@ -4,8 +4,8 @@
 
 namespace multik::graphics::common2d
 {
-    Camera2D::Camera2D(float left, float top, float right, float bottom)
-        : view(1.0f), proj(glm::ortho(left, top, right, bottom)) { }
+    Camera2D::Camera2D(float left, float right, float bottom, float top)
+        : view(1.0f), proj(glm::ortho(left, right, bottom, top)) { }
 
     glm::mat4 Camera2D::getMVPMatrix(const glm::mat4 &model) const
     {

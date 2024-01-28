@@ -79,10 +79,13 @@ protected:
     }
 
 public:
-    MainApp() 
-        : multik::platform::GlfwApplication(640, 480) 
+    static const int ScreenWidth = 1280, ScreenHeight = 720;
+
+    MainApp()
+        : multik::platform::GlfwApplication(ScreenWidth, ScreenHeight)
         {
-            camera = multik::MakeRef<mltg::common2d::Camera2D>(-2.0, 2.0, -1.5, 1.5);
+            const float yBorder = 2.0f * ScreenHeight / ScreenWidth;
+            camera = multik::MakeRef<mltg::common2d::Camera2D>(-2.0, 2.0, -yBorder, yBorder);
         }
 
     MainApp(const MainApp &other) = delete;
