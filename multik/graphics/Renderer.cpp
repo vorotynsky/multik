@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Vorotynsky Maxim
+
 #include "Renderer.hpp"
 
 namespace multik::graphics 

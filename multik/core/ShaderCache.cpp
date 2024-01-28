@@ -1,3 +1,5 @@
+// Copyright (c) 2020 Vorotynsky Maxim
+
 #include "ShaderCache.hpp"
 
 namespace multik::core
