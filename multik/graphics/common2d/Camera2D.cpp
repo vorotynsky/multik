@@ -1,5 +1,3 @@
-// Copyright (c) 2020 Vorotynsky Maxim
-
 #include "Camera2D.hpp"
 
 namespace multik::graphics::common2d

@@ -1,5 +1,3 @@
-// Copyright (c) 2020 Vorotynsky Maxim
-
 #pragma once
 
 #include "../Camera.hpp"
